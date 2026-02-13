@@ -1,0 +1,252 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300);
+
+body{
+  background: radial-gradient(circle at 50% 50%, #1b232a, #080b10);
+}
+
+h2, #resultado {
+    text-align: center; /* Centra el texto */
+    width: 100%; /* Asegura que ocupe todo el espacio */
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    color: #fff;
+}
+
+#numeros {
+    display: grid;
+    grid-template-columns: repeat(8, 50px);
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+.numero {
+    width: 50px;
+    height: 50px;
+    color: white;
+    text-align: center;
+    line-height: 50px;
+    background-color: #3e484e;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    box-shadow: 1px 2px 10px 0px rgba(0,0,0,0.3);
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.seleccionado {
+    background: #797f80;
+    border: 1px solid rgb(255, 255, 255);
+	  color: #080808;
+		transition: all .3s ease-in-out;
+}
+
+button {
+	position: relative;
+	box-sizing: border-box;
+	display: inline-block;
+	border-radius: 5px;
+	margin: 5px;
+	background: #d9dbd7;
+  border: none;
+	color: #0a0a0a;
+	cursor: pointer;
+	text-align: center;
+	font-size: 16px;
+	font-weight: 400;
+	line-height: 27px;
+	transition: all .5s ease-in-out;
+	
+	&:hover {
+    background: none;
+	  border: 1px solid #a7a7a7;
+	  color: #ffffff;
+		transition: all .3s ease-in-out;
+	}
+	
+	&:before {
+		display: block;
+		content: '';
+		position: absolute;
+		z-index: -1;
+		top: -1px;
+		left: -1px;
+		right: -1px;
+		bottom: -1px;
+		border-radius: 50%;
+		background: #fff;
+		transform: scale(0);
+		transition: all .5s ease-in-out;
+	}
+	
+}
+a{
+  color: #000000;
+  text-decoration: none;
+  &:hover {
+    color: #ffffff;
+    text-decoration: none;
+  }
+}
+
+.mensaje {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 400px;
+  height: 400px;
+  margin-top: -200px;
+  margin-left: -200px;
+  border-radius: 2px;
+  box-shadow: 1px 2px 10px 0px rgba(0,0,0,0.3);
+	overflow: hidden;
+  background: #1b232a;
+  color: #415868;
+	font-family: 'Open Sans', Helvetica, sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+
+  &.hide {
+		animation: hide-modal .6s ease-in-out both;
+	}
+}
+.modal {
+  position: absolute;
+	width: 280px;
+	height: 210px;
+  top: 95px;
+  left: 60px;
+	background: #fff;
+	border-radius: 3px;
+	box-shadow: 4px 8px 12px 0 rgba(0,0,0,0.4);
+	text-align: center;
+	overflow: hidden;
+	animation: show-modal .7s ease-in-out;
+	
+	&.hide {
+		animation: hide-modal .6s ease-in-out both;
+	}
+	
+	img {
+		margin-top: 24px;
+	}
+	
+	.title {
+		display: block;
+		font-size: 18px;
+		line-height: 24px;
+		font-weight: 400;
+		margin: 14px 0 5px 0;
+	}
+	
+	p {
+		font-size: 14px;
+		font-weight: 300;
+		line-height: 19px;
+		margin: 0;
+		padding: 0 30px;
+	}
+	
+	.minimizar {
+		position: absolute;
+		height: 40px;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		background: #F65656;
+		color: #fff;
+		line-height: 40px;
+		font-size: 14px;
+		font-weight: 400;
+		cursor: pointer;
+		transition: background .3s ease-in-out;
+		
+		&:hover {
+			background: #EC3434;
+		}
+		
+	}
+	
+}
+
+@keyframes show-modal {
+	0% {
+		transform: scale(0);
+	}
+	60% {
+		transform: scale(1.1);
+	}
+	80% {
+		transform: scale(.95);
+	}
+	100% {
+		transform: scale(1);
+	}
+}
+
+@keyframes hide-modal {
+	0% {
+		transform: scale(1);
+	}
+	20% {
+		transform: scale(1.1);
+	}
+	100% {
+		transform: scale(0);
+	}
+}
+
+@keyframes button {
+	0% {
+		width: 260px;
+		left: 70px;
+		border-color: #fff;
+		color: #fff;
+	}
+	50% {
+		color: transparent;
+	}
+	100% {
+		width: 60px;
+		left: 170px;
+		border-color: #45B078;
+		background: transparent;
+		color: transparent;
+	}
+}
+
+@keyframes circle {
+	0% {
+		stroke-dashoffset: 183;
+	}
+	50% {
+		stroke-dashoffset: 0;
+		stroke-dasharray: 183;
+		transform: rotate(-90deg) scale(1);
+		opacity: 1;
+	}
+	90%, 100% {
+		stroke-dasharray: 500 500;
+		transform: rotate(-90deg) scale(2);
+		opacity: 0;
+	}
+}
+
+@keyframes fill {
+	0% {
+		background: transparent;
+		border-color: #fff;
+	}
+	100% {
+		background: #fff;
+	}
+}
+
+@keyframes check {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}

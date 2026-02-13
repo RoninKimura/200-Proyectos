@@ -1,0 +1,37 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f4f4f4;
+}
+#numeros {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+button {
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+}
+button:hover {
+    background-color: #0056b3;
+}
+.numero {
+    width: 40px;
+    height: 40px;
+    margin: 5px;
+    line-height: 40px;
+    text-align: center;
+    border: 1px solid #007bff;
+    cursor: pointer;
+    background-color: white;
+}
+.numero.selected {
+    background-color: #007bff;
+    color: white;
+}

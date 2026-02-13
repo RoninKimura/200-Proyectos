@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <link rel="stylesheet" href="CSS/Tabla1.css">
+  <title>Sorteo1</title>
+</head>
+<body>
+   <h2>Selecciona tus 6 números</h2>
+    <div id="numeros"></div>
+    <button class="resultado" onclick="calcularProbabilidad()">Calcular Probabilidad</button>
+    <button><a href="index.html">Volver</a></button>
+    <p id="resultado"></p>
+
+    <div id="mensajeError"  class="mensaje">
+      <div  class="modal">
+        <img src="https://100dayscss.com/codepen/alert.png" width="44" height="38" />
+		    <span class="title">Espera!</span>
+		    <p >Debes seleccionar exactamente 6 números.</p>
+		    <div class="minimizar">Aceptar</div>
+      </div>
+    </div>
+
+    <script src="JS/Tabla1.js"></script>
+</body>
+</html>
