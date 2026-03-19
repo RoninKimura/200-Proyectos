@@ -1,0 +1,10 @@
+body{
+  background: linear-gradient(to right, rgb(35, 54, 35), rgb(53, 35, 53));
+  
+}
+
+.image{
+  position:absolute;
+  left: 0;
+  top: 0;
+}
