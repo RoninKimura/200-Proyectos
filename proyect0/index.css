@@ -3,6 +3,10 @@ body{
   
 }
 
+#heat{
+  z-index: 1;
+}
+
 .image{
   position:absolute;
   left: 0;

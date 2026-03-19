@@ -24,7 +24,7 @@ function animateCusors(){
     const grados=angulo*(180/Math.PI);
 
     cursor.style.left=x-25+"px";
-    cursor.style.top=y+10+"px";
+    cursor.style.top=y+"px";
 
     cursor.style.transform="rotate("+grados+"deg)";
 
@@ -32,8 +32,8 @@ function animateCusors(){
     cursor.y=y;
 
     const nextCursor=cursors[index+1]|| cursors[0];
-    x+= (nextCursor.x-x)*0.8;
-    y+= (nextCursor.y-y)*0.8; 
+    x+= (nextCursor.x-x)*0.6;
+    y+= (nextCursor.y-y)*0.6; 
 
   });
   // requestAnimationFrame(animateCusors);
