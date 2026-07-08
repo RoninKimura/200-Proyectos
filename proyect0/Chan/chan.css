@@ -1,0 +1,22 @@
+body{
+  background: radial-gradient(circle, grey, black);
+  background-repeat: no-repeat;
+  padding: 0;
+  margin: 0;
+}
+
+main{
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  position: relative;
+}
+
+#cuerpo{
+  z-index: 1;
+}
+
+#brazos, #brazos img{
+  position:absolute;
+  z-index: 2;
+}
