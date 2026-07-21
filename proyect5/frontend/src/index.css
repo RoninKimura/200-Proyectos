@@ -1,0 +1,176 @@
+/* ==========================================================================
+   HALO ARMORY — Design tokens
+   Concepto: terminal táctica UNSC. Fondo casi-negro azulado (interior de nave),
+   acento primario cian HUD (información/UNSC) y acento ámbar (advertencia/daño alto).
+   Elemento firma: tarjetas con "corner brackets" tipo mira de HUD que se
+   iluminan al pasar el cursor, como el sistema de adquisición de blancos de un Spartan.
+   ========================================================================== */
+
+:root {
+  --bg-void: #0a0d13;
+  --bg-panel: #121924;
+  --bg-panel-raised: #19212f;
+  --border-steel: #2a3444;
+
+  --hud-cyan: #4ce0d2;
+  --hud-cyan-dim: #2a6e68;
+  --hud-amber: #f2a93b;
+  --hud-danger: #e5555c;
+
+  --text-primary: #e7edf3;
+  --text-steel: #8996a8;
+  --text-muted: #57647a;
+
+  --font-display: 'Rajdhani', 'Arial Narrow', sans-serif;
+  --font-body: 'IBM Plex Sans', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
+
+  --radius: 3px;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+
+body {
+  background: var(--bg-void);
+  background-image:
+    radial-gradient(ellipse at top, rgba(76, 224, 210, 0.06), transparent 60%),
+    repeating-linear-gradient(0deg, rgba(255,255,255,0.012) 0px, rgba(255,255,255,0.012) 1px, transparent 1px, transparent 3px);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+#root { min-height: 100vh; display: flex; flex-direction: column; }
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin: 0;
+  color: var(--text-primary);
+}
+
+a { color: var(--hud-cyan); text-decoration: none; }
+button { font-family: var(--font-display); cursor: pointer; }
+input, textarea, select { font-family: var(--font-body); }
+
+a:focus-visible, button:focus-visible, input:focus-visible,
+textarea:focus-visible, select:focus-visible {
+  outline: 2px solid var(--hud-cyan);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}
+
+.wrap { max-width: 1180px; margin: 0 auto; padding: 0 24px; width: 100%; }
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--hud-cyan);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.eyebrow::before { content: ''; width: 18px; height: 1px; background: var(--hud-cyan); display: inline-block; }
+
+/* ---------- Botones ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 22px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: var(--radius);
+  border: 1px solid transparent;
+  transition: all 0.15s ease;
+  clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+}
+
+.btn-primary { background: var(--hud-cyan); color: #04211e; }
+.btn-primary:hover { background: #6fe9dd; }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.btn-ghost { background: transparent; border: 1px solid var(--border-steel); color: var(--text-primary); }
+.btn-ghost:hover { border-color: var(--hud-cyan); color: var(--hud-cyan); }
+
+.btn-danger { background: transparent; border: 1px solid var(--hud-danger); color: var(--hud-danger); }
+.btn-danger:hover { background: var(--hud-danger); color: #1a0303; }
+
+.btn-sm { padding: 7px 14px; font-size: 13px; }
+
+/* ---------- Panel HUD (elemento firma) ---------- */
+.hud-panel {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-steel);
+  border-radius: var(--radius);
+  position: relative;
+}
+
+.hud-panel::before, .hud-panel::after {
+  content: '';
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--hud-cyan);
+  opacity: 0.55;
+  transition: opacity 0.2s ease;
+}
+.hud-panel::before { top: -1px; left: -1px; border-right: none; border-bottom: none; }
+.hud-panel::after { bottom: -1px; right: -1px; border-left: none; border-top: none; }
+.hud-panel:hover::before, .hud-panel:hover::after { opacity: 1; }
+
+/* ---------- Formularios ---------- */
+.field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+
+.field label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-steel);
+}
+
+.field input, .field textarea, .field select {
+  background: var(--bg-void);
+  border: 1px solid var(--border-steel);
+  color: var(--text-primary);
+  padding: 10px 12px;
+  border-radius: var(--radius);
+  font-size: 14px;
+}
+
+.field input:focus, .field textarea:focus, .field select:focus {
+  border-color: var(--hud-cyan);
+  outline: none;
+}
+
+.field textarea { resize: vertical; min-height: 80px; }
+
+.error-text { font-family: var(--font-mono); font-size: 13px; color: var(--hud-danger); }
+
+/* ---------- Footer ---------- */
+.site-footer {
+  border-top: 1px solid var(--border-steel);
+  padding: 22px 0;
+  margin-top: auto;
+}
+
+.site-footer span {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+}

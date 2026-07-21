@@ -1,0 +1,26 @@
+.login-page {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  padding: 60px 0;
+}
+
+.login-wrap { display: flex; justify-content: center; }
+
+.login-panel {
+  width: 100%;
+  max-width: 400px;
+  padding: 36px;
+}
+
+.login-panel h1 { font-size: 26px; margin: 14px 0 8px; }
+
+.login-sub {
+  color: var(--text-steel);
+  font-size: 14px;
+  margin: 0 0 24px;
+}
+
+.login-error { margin: -6px 0 16px; }
+
+.login-panel .btn { width: 100%; margin-top: 6px; }
