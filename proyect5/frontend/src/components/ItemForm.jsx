@@ -18,20 +18,52 @@ const VEHICLE_TYPES = [
   ['espacial', 'Nave espacial'],
 ];
 
+const CHARACTER_TYPES=[
+   ['humano','Humano'],
+   ['inteligencia_artificial','Inteligencia Artificial'],
+   ['elites','Sangheili'],
+   ['grunts','Unggoy'],
+   ['brutes','Jiralhanae'],
+   ['prophets','San\'Shyuum'],
+];
+
 const emptyWeapon = { nombre: '', tipo: 'rifle_asalto', dano: '', fecha_introduccion: '', descripcion: '', imagen_url: '' };
 const emptyVehicle = { nombre: '', tipo: 'terrestre', capacidad: '', fecha_introduccion: '', descripcion: '', imagen_url: '' };
+const emptyCharacter = { nombre: '', especie: 'humano', fecha_introduccion: '', descripcion: '', imagen_url: '' };
 
 export default function ItemForm({ kind, initial, onSubmit, onCancel, saving }) {
   const isWeapon = kind === 'weapons';
-  const typeOptions = isWeapon ? WEAPON_TYPES : VEHICLE_TYPES;
-  const statField = isWeapon ? 'dano' : 'capacidad';
-  const statLabel = isWeapon ? 'Daño estimado' : 'Capacidad (tripulantes)';
+  const type_Options_By_Kind={
+    weapons: WEAPON_TYPES,
+    vehicles: VEHICLE_TYPES,
+    characters: CHARACTER_TYPES,
+  };
+  const typeOptions = type_Options_By_Kind[kind];
 
-  const [form, setForm] = useState(initial || (isWeapon ? emptyWeapon : emptyVehicle));
+  const stat_Options_Field={
+    weapons:'dano',
+    vehicles:'capacidad',
+  };
+
+  const stat_Options_Label={
+    weapons:'Daño estimado' , 
+    vehicles:'Capacidad (tripulantes)',
+  };
+
+  const statField = stat_Options_Field[kind];
+  const statLabel = stat_Options_Label[kind];
+
+  const empy_By_Kind={
+    weapons: emptyWeapon,
+    vehicles: emptyVehicle,
+    characters: emptyCharacter,
+  }
+
+  const [form, setForm] = useState(initial || (empy_By_Kind[kind]));
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    setForm(initial || (isWeapon ? emptyWeapon : emptyVehicle));
+    setForm(initial || (empy_By_Kind[kind]));
     setErrors({});
   }, [initial, kind]);
 
@@ -51,7 +83,10 @@ export default function ItemForm({ kind, initial, onSubmit, onCancel, saving }) 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!validate()) return;
-    onSubmit({ ...form, [statField]: Number(form[statField]) });
+    onSubmit({ 
+      ...form,
+      ... (statField ?{[statField]: Number(form[statField]) }:{}),
+    });
   };
 
   return (
@@ -73,17 +108,19 @@ export default function ItemForm({ kind, initial, onSubmit, onCancel, saving }) 
         </select>
       </div>
 
-      <div className="field">
-        <label htmlFor="stat">{statLabel}</label>
-        <input
-          id="stat"
-          type="number"
-          min="0"
-          value={form[statField]}
-          onChange={handleChange(statField)}
-        />
-        {errors[statField] && <span className="error-text">{errors[statField]}</span>}
-      </div>
+      {statField &&(
+        <div className="field">
+          <label htmlFor="stat">{statLabel}</label>
+          <input
+            id="stat"
+            type="number"
+            min="0"
+            value={form[statField]}
+            onChange={handleChange(statField)}
+          />
+          {errors[statField] && <span className="error-text">{errors[statField]}</span>}
+        </div>
+      )}
 
       <div className="field">
         <label htmlFor="fecha">Fecha de introducción</label>

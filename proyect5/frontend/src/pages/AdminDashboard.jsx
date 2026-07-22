@@ -49,8 +49,23 @@ export default function AdminDashboard() {
     }
   };
 
-  const statField = tab === 'weapons' ? 'dano' : 'capacidad';
-  const statLabel = tab === 'weapons' ? 'Daño' : 'Capacidad';
+  const stat_Options_Field={
+    weapons:'dano',
+    vehicles:'capacidad',
+    // charcters: 'nombre',
+  };
+
+  const stat_Options_Label={
+    weapons:'Daño' , 
+    vehicles:'Capacidad',
+    // charcters: 'Nombre',
+  };
+
+  const statField = stat_Options_Field[tab];
+  const statLabel = stat_Options_Label[tab];
+
+  // const statField = tab === 'weapons' ? 'dano' : 'capacidad';
+  // const statLabel = tab === 'weapons' ? 'Daño' : 'Capacidad';
 
   return (
     <div className="wrap admin-page">
@@ -79,6 +94,12 @@ export default function AdminDashboard() {
         >
           Vehículos
         </button>
+        <button
+          className={`tab-btn ${tab === 'characters' ? 'is-active' : ''}`}
+          onClick={() => { setTab('characters'); setEditing(null); }}
+        >
+          Personajes
+        </button>
       </div>
 
       {editing && (
@@ -94,8 +115,9 @@ export default function AdminDashboard() {
       {loading && <p className="status-msg">Cargando registros…</p>}
       {error && <p className="status-msg error-text">{error}</p>}
 
-      {!loading && !error && (
+      {!loading && !error &&(
         <div className="admin-table-wrap hud-panel">
+          
           <table className="admin-table">
             <thead>
               <tr>

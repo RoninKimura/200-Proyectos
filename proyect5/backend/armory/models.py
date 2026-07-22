@@ -59,3 +59,32 @@ class Vehicle(models.Model):
 
     def __str__(self):
         return self.nombre
+
+
+class Characters(models.Model):
+
+    TIPO_CHOICHES=[
+        ('humano','Humano'),
+        ('inteligencia_artificial','Inteligencia Artificial'),
+        ('elites','Sangheili'),
+        ('grunts','Unggoy'),
+        ('brutes','Jiralhanae'),
+        ('prophets','San\'Shyuum'),
+    ]
+
+    nombre=models.CharField(max_length=100)
+    especie=models.CharField(max_length=25, choices=TIPO_CHOICHES)
+    fecha_introduccion = models.DateField(                        # date
+        help_text='Fecha/año en que aparece por primera vez en la saga'
+    )
+    descripcion = models.TextField(blank=True)                    # text
+    imagen_url = models.URLField(blank=True, null=True)
+
+    creado_en = models.DateTimeField(auto_now_add=True)
+    actualizado_en = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['nombre']
+
+    def __str__(self):
+        return self.nombre

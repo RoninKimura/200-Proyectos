@@ -5,9 +5,11 @@ import './SpecCard.css';
  * statLabel/statValue: la métrica principal (Daño o Capacidad) mostrada como barra.
  */
 export default function SpecCard({ item, statLabel, statMax = 100, actions }) {
-  const statValue = item.dano ?? item.capacidad ?? 0;
-  const pct = Math.min(100, Math.round((statValue / statMax) * 100));
+  const statValue = item.dano ?? item.capacidad;
+  const tineStat=statValue !== undefined;
+  const pct = tineStat ? Math.min(100, Math.round((statValue / statMax) * 100)) : 0;
   const isHigh = pct >= 70;
+  
 
   return (
     <article className="spec-card hud-panel">
@@ -20,18 +22,20 @@ export default function SpecCard({ item, statLabel, statMax = 100, actions }) {
 
       <p className="spec-desc">{item.descripcion || 'Sin registro adicional en la base de datos.'}</p>
 
-      <div className="spec-stat">
-        <div className="spec-stat-labels">
-          <span>{statLabel}</span>
-          <span className="spec-stat-value">{statValue}</span>
+      {tineStat &&(
+        <div className="spec-stat">
+          <div className="spec-stat-labels">
+            <span>{statLabel}</span>
+            <span className="spec-stat-value">{statValue}</span>
+          </div>
+          <div className="spec-stat-track">
+            <div
+              className={`spec-stat-fill ${isHigh ? 'is-high' : ''}`}
+              style={{ width: `${pct}%` }}
+            />
+          </div>
         </div>
-        <div className="spec-stat-track">
-          <div
-            className={`spec-stat-fill ${isHigh ? 'is-high' : ''}`}
-            style={{ width: `${pct}%` }}
-          />
-        </div>
-      </div>
+      )}
 
       <div className="spec-card-footer">
         <span className="spec-date">Introducido: {item.fecha_introduccion}</span>

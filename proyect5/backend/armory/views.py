@@ -1,6 +1,6 @@
 from rest_framework import viewsets, filters
-from .models import Weapon, Vehicle
-from .serializers import WeaponSerializer, VehicleSerializer
+from .models import Weapon, Vehicle,Characters
+from .serializers import WeaponSerializer, VehicleSerializer, CharactersSerializer
 from .permissions import IsAdminOrReadOnly
 
 
@@ -20,3 +20,12 @@ class VehicleViewSet(viewsets.ModelViewSet):
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['nombre', 'descripcion']
     ordering_fields = ['nombre', 'capacidad', 'fecha_introduccion']
+
+
+class CharactersSet(viewsets.ModelViewSet):
+    queryset = Characters.objects.all()
+    serializer_class = CharactersSerializer
+    permission_classes = [IsAdminOrReadOnly]
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    search_fields = ['nombre', 'descripcion']
+    ordering_fields = ['nombre', 'especie', 'fecha_introduccion']

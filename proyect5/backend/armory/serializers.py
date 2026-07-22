@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Weapon, Vehicle
+from .models import Weapon, Vehicle,Characters
 
 
 class WeaponSerializer(serializers.ModelSerializer):
@@ -22,6 +22,19 @@ class VehicleSerializer(serializers.ModelSerializer):
         model = Vehicle
         fields = [
             'id', 'nombre', 'tipo', 'tipo_display', 'capacidad',
+            'fecha_introduccion', 'descripcion', 'imagen_url',
+            'creado_en', 'actualizado_en',
+        ]
+        read_only_fields = ['id', 'creado_en', 'actualizado_en']
+
+
+class CharactersSerializer(serializers.ModelSerializer):
+    tipo_display = serializers.CharField(source='get_especie_display', read_only=True)
+
+    class Meta:
+        model = Characters
+        fields = [
+            'id', 'nombre', 'especie', 'tipo_display',
             'fecha_introduccion', 'descripcion', 'imagen_url',
             'creado_en', 'actualizado_en',
         ]

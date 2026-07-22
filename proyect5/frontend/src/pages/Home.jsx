@@ -7,17 +7,19 @@ export default function Home() {
   const [tab, setTab] = useState('weapons');
   const [weapons, setWeapons] = useState([]);
   const [vehicles, setVehicles] = useState([]);
+  const [characters, setCharacters]= useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
   useEffect(() => {
     let active = true;
     setLoading(true);
-    Promise.all([api.get('/weapons/'), api.get('/vehicles/')])
-      .then(([wRes, vRes]) => {
+    Promise.all([api.get('/weapons/'), api.get('/vehicles/'), api.get('/characters/')])
+      .then(([wRes, vRes, cRes]) => {
         if (!active) return;
         setWeapons(wRes.data.results ?? wRes.data);
         setVehicles(vRes.data.results ?? vRes.data);
+        setCharacters(cRes.data.results ?? cRes.data);
         setError('');
       })
       .catch(() => {
@@ -27,7 +29,16 @@ export default function Home() {
     return () => { active = false; };
   }, []);
 
-  const items = tab === 'weapons' ? weapons : vehicles;
+  // const items = tab === 'weapons' ? weapons : vehicles;
+  const itemsOptions={
+    weapons:weapons,
+    vehicles:vehicles,
+    characters:characters,
+  };
+  const items= itemsOptions[tab];
+
+  const STAT_LABEL_BY_TAB = { weapons: 'Daño', vehicles: 'Capacidad' };
+  const STAT_MAX_BY_TAB = { weapons: 100, vehicles: 10 };
 
   return (
     <div className="home">
@@ -47,6 +58,10 @@ export default function Home() {
             <div className="hero-stat">
               <span className="hero-stat-num">{vehicles.length}</span>
               <span className="hero-stat-label">Vehículos registrados</span>
+            </div>
+            <div className="hero-stat">
+              <span className="hero-stat-num">{characters.length}</span>
+              <span className="hero-stat-label">Personajes registrados</span>
             </div>
           </div>
         </div>
@@ -70,6 +85,14 @@ export default function Home() {
           >
             Vehículos ({vehicles.length})
           </button>
+          <button
+            role="tab"
+            aria-selected={tab === 'characters'}
+            className={`tab-btn ${tab === 'characters' ? 'is-active' : ''}`}
+            onClick={() => setTab('characters')}
+          >
+            Personajes ({characters.length})
+          </button>
         </div>
 
         {loading && <p className="status-msg">Consultando la base de datos táctica…</p>}
@@ -85,8 +108,8 @@ export default function Home() {
               <SpecCard
                 key={item.id}
                 item={item}
-                statLabel={tab === 'weapons' ? 'Daño' : 'Capacidad'}
-                statMax={tab === 'weapons' ? 100 : 10}
+                statLabel={STAT_LABEL_BY_TAB[tab]}
+                statMax={STAT_MAX_BY_TAB[tab]}
               />
             ))}
           </div>
