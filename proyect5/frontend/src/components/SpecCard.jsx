@@ -5,7 +5,7 @@ import './SpecCard.css';
  * statLabel/statValue: la métrica principal (Daño o Capacidad) mostrada como barra.
  */
 export default function SpecCard({ item, statLabel, statMax = 100, actions }) {
-  const statValue = item.dano ?? item.capacidad;
+  const statValue = item.dano ?? item.capacidad ?? item.precio;
   const tineStat=statValue !== undefined;
   const pct = tineStat ? Math.min(100, Math.round((statValue / statMax) * 100)) : 0;
   const isHigh = pct >= 70;

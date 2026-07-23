@@ -27,27 +27,39 @@ const CHARACTER_TYPES=[
    ['prophets','San\'Shyuum'],
 ];
 
+const SAGA_TYPES=[
+  ['pc','PC'],
+  ['xbox','XBOX'],
+  ['xbox_360','Xbox 360'],
+  ['xbox_one','Xbox One'],
+  ['xbox_one','Xbox One'],
+]
+
 const emptyWeapon = { nombre: '', tipo: 'rifle_asalto', dano: '', fecha_introduccion: '', descripcion: '', imagen_url: '' };
 const emptyVehicle = { nombre: '', tipo: 'terrestre', capacidad: '', fecha_introduccion: '', descripcion: '', imagen_url: '' };
 const emptyCharacter = { nombre: '', especie: 'humano', fecha_introduccion: '', descripcion: '', imagen_url: '' };
+const emptySaga = { nombre: '', consola: 'xbox',precio:'',armas_ids:[], fecha_introduccion: '', descripcion: '', imagen_url: '' };
 
-export default function ItemForm({ kind, initial, onSubmit, onCancel, saving }) {
+export default function ItemForm({ kind, initial, onSubmit, onCancel, saving, weaponsDisponibles=[] }) {
   const isWeapon = kind === 'weapons';
   const type_Options_By_Kind={
     weapons: WEAPON_TYPES,
     vehicles: VEHICLE_TYPES,
     characters: CHARACTER_TYPES,
+    sagas: SAGA_TYPES,
   };
   const typeOptions = type_Options_By_Kind[kind];
 
   const stat_Options_Field={
     weapons:'dano',
     vehicles:'capacidad',
+    sagas:'precio',
   };
 
   const stat_Options_Label={
     weapons:'Daño estimado' , 
     vehicles:'Capacidad (tripulantes)',
+    sagas: 'Precio en pesos mxn'
   };
 
   const statField = stat_Options_Field[kind];
@@ -57,13 +69,25 @@ export default function ItemForm({ kind, initial, onSubmit, onCancel, saving }) 
     weapons: emptyWeapon,
     vehicles: emptyVehicle,
     characters: emptyCharacter,
+    sagas: emptySaga,
   }
 
-  const [form, setForm] = useState(initial || (empy_By_Kind[kind]));
+  const construirFormInicial = (data) => {
+    if (!data) return empy_By_Kind[kind];
+    if (kind === 'sagas') {
+      return { ...data, armas_ids: data.armas_disponibles?.map((a) => a.id) ?? [] };
+    }
+    return data;
+  };
+
+  // const [form, setForm] = useState(construirFormInicial(initial));
+
+  const [form, setForm] = useState(initial || (empy_By_Kind[kind]),construirFormInicial(initial));
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
     setForm(initial || (empy_By_Kind[kind]));
+    setForm(construirFormInicial(initial));
     setErrors({});
   }, [initial, kind]);
 
@@ -132,6 +156,31 @@ export default function ItemForm({ kind, initial, onSubmit, onCancel, saving }) 
         <label htmlFor="descripcion">Descripción</label>
         <textarea id="descripcion" value={form.descripcion} onChange={handleChange('descripcion')} />
       </div>
+
+      {kind === 'sagas' && (
+        <div className="field">
+          <label>Armas disponibles en este juego</label>
+          <div className="aderezo-list">
+            {weaponsDisponibles.map((arma) => (
+              <label key={arma.id} className="aderezo-check">
+                <input
+                  type="checkbox"
+                  checked={form.armas_ids?.includes(arma.id) ?? false}
+                  onChange={() => {
+                    setForm((f) => ({
+                      ...f,
+                      armas_ids: f.armas_ids.includes(arma.id)
+                        ? f.armas_ids.filter((id) => id !== arma.id)
+                        : [...f.armas_ids, arma.id],
+                    }));
+                  }}
+                />
+                <span>{arma.nombre}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+      )}
 
       <div className="field">
         <label htmlFor="imagen_url">URL de imagen (opcional)</label>

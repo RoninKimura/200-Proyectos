@@ -1,6 +1,6 @@
 from rest_framework import viewsets, filters
-from .models import Weapon, Vehicle,Characters
-from .serializers import WeaponSerializer, VehicleSerializer, CharactersSerializer
+from .models import Weapon, Vehicle,Characters,Saga
+from .serializers import WeaponSerializer, VehicleSerializer, CharactersSerializer,SagaSerializer
 from .permissions import IsAdminOrReadOnly
 
 
@@ -29,3 +29,12 @@ class CharactersSet(viewsets.ModelViewSet):
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['nombre', 'descripcion']
     ordering_fields = ['nombre', 'especie', 'fecha_introduccion']
+
+
+class SagaSet(viewsets.ModelViewSet):
+    queryset = Saga.objects.all()
+    serializer_class = SagaSerializer
+    permission_classes = [IsAdminOrReadOnly]
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    search_fields = ['nombre', 'descripcion']
+    ordering_fields = ['nombre', 'consola', 'fecha_introduccion']

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import api from '../api/client';
 import SpecCard from '../components/SpecCard';
+import TableSaga from '../pages/TableWeaponsInSaga';
 import './Home.css';
 
 export default function Home() {
@@ -8,18 +9,20 @@ export default function Home() {
   const [weapons, setWeapons] = useState([]);
   const [vehicles, setVehicles] = useState([]);
   const [characters, setCharacters]= useState([]);
+  const [sagas, setSaga]=useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
   useEffect(() => {
     let active = true;
     setLoading(true);
-    Promise.all([api.get('/weapons/'), api.get('/vehicles/'), api.get('/characters/')])
-      .then(([wRes, vRes, cRes]) => {
+    Promise.all([api.get('/weapons/'), api.get('/vehicles/'), api.get('/characters/'), api.get('/sagas/')])
+      .then(([wRes, vRes, cRes,sRes]) => {
         if (!active) return;
         setWeapons(wRes.data.results ?? wRes.data);
         setVehicles(vRes.data.results ?? vRes.data);
         setCharacters(cRes.data.results ?? cRes.data);
+        setSaga(sRes.data.results ?? sRes.data);
         setError('');
       })
       .catch(() => {
@@ -34,11 +37,12 @@ export default function Home() {
     weapons:weapons,
     vehicles:vehicles,
     characters:characters,
+    sagas: sagas,
   };
-  const items= itemsOptions[tab];
+  const items= itemsOptions[tab] ?? [];
 
-  const STAT_LABEL_BY_TAB = { weapons: 'Daño', vehicles: 'Capacidad' };
-  const STAT_MAX_BY_TAB = { weapons: 100, vehicles: 10 };
+  const STAT_LABEL_BY_TAB = { weapons: 'Daño', vehicles: 'Capacidad', sagas: 'Precio en MXN' };
+  const STAT_MAX_BY_TAB = { weapons: 100, vehicles: 10, sagas: 2000 };
 
   return (
     <div className="home">
@@ -62,6 +66,10 @@ export default function Home() {
             <div className="hero-stat">
               <span className="hero-stat-num">{characters.length}</span>
               <span className="hero-stat-label">Personajes registrados</span>
+            </div>
+            <div className="hero-stat">
+              <span className="hero-stat-num">{sagas.length}</span>
+              <span className="hero-stat-label">Juegos registrados</span>
             </div>
           </div>
         </div>
@@ -93,16 +101,33 @@ export default function Home() {
           >
             Personajes ({characters.length})
           </button>
+          <button
+            role="tab"
+            aria-selected={tab === 'sagas'}
+            className={`tab-btn ${tab === 'sagas' ? 'is-active' : ''}`}
+            onClick={() => setTab('sagas')}
+          >
+            Juegos ({sagas.length})
+          </button>
+
+          <button
+            role="tab"
+            aria-selected={tab === 'matirz'}
+            className={`tab-btn ${tab === 'matriz' ? 'is-active' : ''}`}
+            onClick={() => setTab('matriz')}
+          >
+            Armas en Juegos
+          </button>
         </div>
 
         {loading && <p className="status-msg">Consultando la base de datos táctica…</p>}
         {error && <p className="status-msg error-text">{error}</p>}
 
-        {!loading && !error && items.length === 0 && (
+        {!loading && !error && tab!=='matriz' && items.length === 0 && (
           <p className="status-msg">Aún no hay registros en esta categoría.</p>
         )}
 
-        {!loading && !error && items.length > 0 && (
+        {!loading && !error  &&items.length > 0 && (
           <div className="spec-grid">
             {items.map((item) => (
               <SpecCard
@@ -112,7 +137,12 @@ export default function Home() {
                 statMax={STAT_MAX_BY_TAB[tab]}
               />
             ))}
+
           </div>
+        )}
+
+        {!loading && !error && tab === 'matriz' && (
+          <TableSaga />
         )}
       </section>
     </div>

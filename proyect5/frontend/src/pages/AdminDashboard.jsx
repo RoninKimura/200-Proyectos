@@ -11,6 +11,7 @@ export default function AdminDashboard() {
   const [editing, setEditing] = useState(null); // null = oculto, {} = nuevo, {...} = editar
   const [saving, setSaving] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(null);
+  const [allWeapons, setAllWeapons]=useState([]);
 
   const load = useCallback(() => {
     setLoading(true);
@@ -21,6 +22,10 @@ export default function AdminDashboard() {
   }, [tab]);
 
   useEffect(() => { load(); }, [load]);
+
+  useEffect(() => {
+    api.get('/weapons/').then((res) => setAllWeapons(res.data.results ?? res.data));
+  }, []);
 
   const handleSubmit = async (data) => {
     setSaving(true);
@@ -52,12 +57,14 @@ export default function AdminDashboard() {
   const stat_Options_Field={
     weapons:'dano',
     vehicles:'capacidad',
+    sagas: 'precio'
     // charcters: 'nombre',
   };
 
   const stat_Options_Label={
     weapons:'Daño' , 
     vehicles:'Capacidad',
+    sagas:'Precio en Mxn'
     // charcters: 'Nombre',
   };
 
@@ -100,6 +107,12 @@ export default function AdminDashboard() {
         >
           Personajes
         </button>
+        <button
+          className={`tab-btn ${tab === 'sagas' ? 'is-active' : ''}`}
+          onClick={() => { setTab('sagas'); setEditing(null); }}
+        >
+          Juegos
+        </button>
       </div>
 
       {editing && (
@@ -109,6 +122,7 @@ export default function AdminDashboard() {
           onSubmit={handleSubmit}
           onCancel={() => setEditing(null)}
           saving={saving}
+          weaponsDisponibles={allWeapons}
         />
       )}
 
@@ -130,7 +144,7 @@ export default function AdminDashboard() {
             </thead>
             <tbody>
               {items.map((item) => (
-                <tr key={item.id}>
+                <tr key={item.nombre}>
                   <td>{item.nombre}</td>
                   <td>{item.tipo_display}</td>
                   <td className="mono">{item[statField]}</td>
